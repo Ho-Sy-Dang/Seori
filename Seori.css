@@ -1,0 +1,10 @@
+body {
+  background-color: linear-gradient(135deg, #d9c9f0, #aecbe8, #f1d4e5);
+}
+.Logo {
+  width: 200px;
+  height: 200px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
