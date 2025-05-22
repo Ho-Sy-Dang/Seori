@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -41,5 +41,51 @@
     </div>
 
     <script src="Seori.js"></script>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Seori – Let the Sky Speak</title>
+  <link rel="stylesheet" href="Seori.css">
+</head>
+<body>
+  <div class="card">
+    <div class="search">
+      <input type="text" placeholder="Enter city name" spellcheck="false" />
+      <button><img src="https://i.postimg.cc/WzJt1hwQ/search.png" alt="Search" /></button>
+    </div>
+
+    <div class="error">
+      <p>Invalid city name</p>
+    </div>
+
+    <div class="weather">
+      <img src="https://i.postimg.cc/ZnFndXXc/rain.png" class="weather-icon" alt="Weather icon" />
+      <h1 class="temp">--°C</h1>
+      <h2 class="city">City</h2>
+      <div class="details">
+        <div class="col">
+          <img src="https://i.postimg.cc/X7jdggxJ/humidity.png" alt="Humidity icon" />
+          <div>
+            <p class="humidity">--%</p>
+            <p>Humidity</p>
+          </div>
+        </div>
+        <div class="col">
+          <img src="https://i.postimg.cc/jjhQj3B7/wind.png" alt="Wind icon" />
+          <div>
+            <p class="wind">-- km/h</p>
+            <p>Wind Speed</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="Seori.js"></script>
 </body>
 </html>
