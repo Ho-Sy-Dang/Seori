@@ -1,0 +1,245 @@
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #d9c9f0, #aecbe8, #f1d4e5);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+  color: #333;
+  margin: 0;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.container {
+  position: relative;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  padding: 30px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  width: 100%;
+  max-width: 500px;
+}
+
+h1 {
+  color: #573b8a;
+  margin-bottom: 25px;
+}
+
+#back-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background-color: rgb(130, 125, 125);
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+  z-index: 10;
+}
+
+#back-button:hover {
+  background-color: #a7a5ab;
+}
+
+.profile-section {
+  margin-bottom: 30px;
+}
+
+#current-profile-picture {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #573b8a;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.file-input-container {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+.file-input-container input[type="file"] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.file-input-container label {
+  background-color: #6d44b8;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.file-input-container label:hover {
+  background-color: #573b8a;
+}
+
+button {
+  background-color: #573b8a;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: #6d44b8;
+}
+
+#logout-button {
+  background-color: #dc3545;
+}
+
+#logout-button:hover {
+  background-color: #c82333;
+}
+
+#save-button {
+  background-color: #28a745;
+}
+
+#save-button:hover {
+  background-color: #218838;
+}
+
+#unsaved-warning {
+  background-color: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeeba;
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.warning-buttons {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+#discard-button {
+  background-color: #6c757d;
+}
+
+#discard-button:hover {
+  background-color: #5a6268;
+}
+
+#confirm-save-button {
+  background-color: #28a745;
+}
+
+#confirm-save-button:hover {
+  background-color: #218838;
+}
+
+.hidden {
+  display: none;
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20%,
+  60% {
+    transform: translateX(-5px);
+  }
+  40%,
+  80% {
+    transform: translateX(5px);
+  }
+}
+
+.shake {
+  animation: shake 0.5s;
+}
+
+.fade-out {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 600px) {
+  .container {
+    padding: 20px;
+    margin: 10px; /* Add some margin on smaller screens */
+  }
+
+  h1 {
+    font-size: 1.8em;
+    margin-bottom: 20px;
+  }
+
+  #back-button {
+    top: 10px;
+    left: 10px;
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  #current-profile-picture {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 15px;
+  }
+
+  .file-input-container label,
+  button {
+    padding: 8px 15px;
+    font-size: 14px;
+  }
+
+  #unsaved-warning {
+    padding: 10px;
+    font-size: 0.9em;
+  }
+
+  .warning-buttons {
+    flex-direction: column; /* Stack buttons on small screens */
+    gap: 8px;
+  }
+
+  .warning-buttons button {
+    width: 80%; /* Make buttons wider */
+    margin: 0 auto; /* Center buttons */
+  }
+}

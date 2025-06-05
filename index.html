@@ -1,16 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Seori - Let the Sky Speak</title>
-  <link rel="stylesheet" href="Seori.css">
+  <link rel="stylesheet" href="Seori.css" />
 </head>
-<body>
 
-  <div style="position: absolute; top: 20px; right: 20px; z-index: 100;">
-    <a href="Sign-in_Sign-up.html" style="margin-right: 15px; color: white; text-decoration: none; font-weight: bold;">Sign up</a>
-    <a href="Sign-in_Sign-up.html" style="color: white; text-decoration: none; font-weight: bold;">Login</a>
+<body>
+  <div id="auth-links" style="position: absolute; top: 20px; right: 20px; z-index: 100">
+    <a href="Sign-in_Sign-up.html" style="
+          margin-right: 15px;
+          color: white;
+          text-decoration: none;
+          font-weight: bold;
+        ">Sign up</a>
+    <a href="Sign-in_Sign-up.html" style="color: white; text-decoration: none; font-weight: bold">Login</a>
+  </div>
+
+  <div id="account-button-container" style="
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        display: none;
+      ">
+    <button id="account-button" style="background: none; border: none; padding: 0; cursor: pointer">
+      <img id="profile-picture" src="https://i.postimg.cc/pVw7W9Bv/user-icon.png" alt="Account" style="
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            filter: grayscale(100%);
+          " />
+    </button>
   </div>
 
   <div class="card">
@@ -20,7 +43,9 @@
 
     <div class="search">
       <input type="text" placeholder="Enter city name" spellcheck="false" />
-      <button><img src="https://i.postimg.cc/WzJt1hwQ/search.png" alt="Search" /></button>
+      <button>
+        <img src="https://i.postimg.cc/WzJt1hwQ/search.png" alt="Search" />
+      </button>
     </div>
 
     <div class="error">
@@ -50,6 +75,25 @@
     </div>
   </div>
 
-  <script src="Seori.js"></script>
-</body>
+  <div id="chatbot-container">
+    <div id="chatbot-button">💬</div>
+    <div id="chat-window" class="hidden">
+      <div id="chat-header">Seori Chat</div>
+      <div id="chat-messages"></div>
+      <form id="chat-form">
+        <input type="text" id="user-input" placeholder="Ask me anything..." autocomplete="off" />
+        <button type="submit">➤</button>
+      </form>
+    </div>
+  </div>
+
+
+  <body class="fade-in">
+
+    <script src="Seori.js"></script>
+
+    <script src="Chatbot.js"></script>
+
+  </body>
+
 </html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Account Management</title>
+  <link rel="stylesheet" href="Account.css" />
+</head>
+
+<body>
+  <div class="container">
+    <button id="back-button">← Back</button>
+
+    <h1>Account Management</h1>
+
+    <div class="profile-section">
+      <img id="current-profile-picture" src="https://i.postimg.cc/pVw7W9Bv/user-icon.png" alt="Profile Picture" />
+      <div class="file-input-container">
+        <input type="file" id="profile-picture-input" accept="image/*" />
+        <label for="profile-picture-input">Change Profile Picture</label>
+      </div>
+      <p>Upload a new image to change your profile picture.</p>
+    </div>
+
+    <div id="unsaved-warning" class="hidden">
+      <p>⚠ Hãy cẩn thận - bạn chưa lưu các thay đổi!</p>
+      <div class="warning-buttons">
+        <button id="discard-button">Đặt lại</button>
+        <button id="confirm-save-button">Lưu các thay đổi</button>
+      </div>
+    </div>
+
+    <button id="save-button">Save</button>
+    <button id="logout-button">Log Out</button>
+  </div>
+
+  <script src="Account.js"></script>
+</body>
+
+</html>
