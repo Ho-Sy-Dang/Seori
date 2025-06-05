@@ -1,5 +1,6 @@
-const apiKey = "cddae1f52f5beef9c20fa6bb6258fcab";
-const apiUrl = "https://api.weatherapi.com/v1/current.json?key=" + apiKey + "&q=";
+const apiKey = "5a26c2988bf8c3f097ca22781da1f921";
+const apiUrl =
+  "https://api.openweathermap.org/data/2.5/weather?appid=" + apiKey + "&q=";
 
 const searchBox = document.querySelector(".search input");
 const searchBtn = document.querySelector(".search button");
@@ -10,7 +11,7 @@ async function checkWeather(city) {
   try {
     // Không thêm ", Vietnam" mặc định nữa.
     // API sẽ tự cố gắng tìm kiếm toàn cầu dựa trên tên thành phố.
-    const response = await fetch(apiUrl + encodeURIComponent(city));
+    const response = await fetch(apiUrl + city);
 
     if (!response.ok) {
       // Nếu API trả về lỗi (ví dụ: không tìm thấy thành phố)
@@ -24,25 +25,28 @@ async function checkWeather(city) {
     }
 
     const data = await response.json();
-
+    console.log(data);
     // Vẫn truyền 'city' (tên người dùng nhập) và dữ liệu API để hiển thị.
-    renderWeather(data, city);
+    renderWeather(data);
   } catch (error) {
+    console.log(error.message);
     showError(error.message);
   }
 }
 
 // Cập nhật giao diện khi có dữ liệu
-function renderWeather(data, searchedCity) {
+function renderWeather(data) {
   // Hiển thị tên thành phố mà người dùng đã nhập, và quốc gia mà API đã tìm thấy.
   // Điều này sẽ giúp phân biệt nếu có nhiều thành phố trùng tên ở các quốc gia khác nhau.
-  document.querySelector(".city").innerText = searchedCity + ", " + data.location.country;
-  document.querySelector(".temp").innerText = Math.round(data.current.temp_c) + "°C";
-  document.querySelector(".humidity").innerText = data.current.humidity + "%";
-  document.querySelector(".wind").innerText = data.current.wind_kph + " km/h";
+  document.querySelector(".city").innerHTML =
+    data.name + ", <br/>" + data.weather[0].description;
+  document.querySelector(".temp").innerText =
+    Math.round(data.main.temp) + "°F";
+  document.querySelector(".humidity").innerText = data.main.humidity + "%";
+  document.querySelector(".wind").innerText = data.wind.speed + " km/h";
 
-  weatherIcon.src = "https:" + data.current.condition.icon;
-  weatherIcon.alt = data.current.condition.text;
+  weatherIcon.src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+  weatherIcon.alt = data.name;
 
   document.querySelector(".weather").style.display = "block";
   document.querySelector(".error").style.display = "none";
@@ -73,7 +77,9 @@ document.addEventListener("DOMContentLoaded", () => {
   document.body.classList.remove("fade-in");
 
   const authLinks = document.getElementById("auth-links");
-  const accountButtonContainer = document.getElementById("account-button-container");
+  const accountButtonContainer = document.getElementById(
+    "account-button-container"
+  );
   const accountButton = document.getElementById("account-button");
   const profilePicture = document.getElementById("profile-picture");
 
@@ -84,8 +90,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (isLoggedIn) {
       authLinks.style.display = "none";
       accountButtonContainer.style.display = "block";
-      profilePicture.src = savedProfilePicture || "https://i.postimg.cc/pVw7W9Bv/user-icon.png";
-      profilePicture.style.filter = savedProfilePicture ? "none" : "grayscale(100%)";
+      profilePicture.src =
+        savedProfilePicture || "https://i.postimg.cc/pVw7W9Bv/user-icon.png";
+      profilePicture.style.filter = savedProfilePicture
+        ? "none"
+        : "grayscale(100%)";
     } else {
       authLinks.style.display = "block";
       accountButtonContainer.style.display = "none";
