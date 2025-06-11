@@ -311,7 +311,7 @@ body {
 
   .card {
     padding: 20px;
-    width: 95%; /* Adjust width for very small screens */
+    width: 95%; 
   }
 
   .logo-text {
@@ -345,13 +345,13 @@ body {
   }
 
   .details {
-    flex-direction: column; /* Stack humidity and wind vertically */
+    flex-direction: column;
     gap: 15px;
     margin-top: 20px;
   }
 
   .col {
-    justify-content: center; /* Center content in stacked columns */
+    justify-content: center;
   }
 
   .col img {
@@ -390,11 +390,11 @@ body {
   }
 
   #chat-window {
-    width: 90%; /* Make chat window take more width */
-    max-width: 280px; /* Limit max width */
+    width: 90%; 
+    max-width: 280px;
     height: 300px;
     bottom: 60px;
-    right: 5%; /* Adjust position to be centered on small screens */
+    right: 5%;
     left: 5%;
   }
 }

@@ -197,11 +197,10 @@ button:hover {
   transition: opacity 0.5s ease;
 }
 
-/* Responsive adjustments for smaller screens */
-@media (max-width: 600px) {
+ @media (max-width: 600px) {
   .container {
     padding: 20px;
-    margin: 10px; /* Add some margin on smaller screens */
+    margin: 10px; 
   }
 
   h1 {
@@ -234,12 +233,12 @@ button:hover {
   }
 
   .warning-buttons {
-    flex-direction: column; /* Stack buttons on small screens */
+    flex-direction: column;
     gap: 8px;
   }
 
   .warning-buttons button {
-    width: 80%; /* Make buttons wider */
-    margin: 0 auto; /* Center buttons */
+    width: 80%;
+    margin: 0 auto;
   }
 }

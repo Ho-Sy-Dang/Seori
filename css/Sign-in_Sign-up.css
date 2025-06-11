@@ -93,37 +93,37 @@ button:hover {
 }
 
 /* Responsive adjustments */
-@media (max-width: 480px) {
+ @media (max-width: 480px) {
   .main {
-    width: 90%; /* Make main container take more width */
-    max-width: 320px; /* Limit max-width */
-    height: 450px; /* Adjust height */
+    width: 90%;
+    max-width: 320px; 
+    height: 450px; 
   }
 
   label {
-    font-size: 2em; /* Slightly smaller font size */
-    margin: 30px; /* Adjust margin */
+    font-size: 2em; 
+    margin: 30px; 
   }
 
   input {
-    width: 70%; /* Make inputs wider */
-    padding: 10px; /* Slightly less padding */
-    margin: 15px auto; /* Adjust margin */
+    width: 70%; 
+    padding: 10px; 
+    margin: 15px auto; 
   }
 
   button {
-    width: 70%; /* Make buttons wider */
-    height: 35px; /* Slightly less height */
-    margin-top: 25px; /* Adjust margin */
-    font-size: 0.9em; /* Slightly smaller font size */
+    width: 70%; 
+    height: 35px; 
+    margin-top: 25px; 
+    font-size: 0.9em; 
   }
 
   .login {
-    transform: translateY(-150px); /* Adjust login panel position */
-    height: 400px; /* Adjust height */
+    transform: translateY(-150px);
+    height: 400px;
   }
 
   #chk:checked ~ .login {
-    transform: translateY(-450px); /* Adjust checked state for login */
+    transform: translateY(-450px);
   }
 }
