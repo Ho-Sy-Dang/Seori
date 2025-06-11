@@ -1,65 +1,76 @@
-const apiKey = "5a26c2988bf8c3f097ca22781da1f921";
+const apiKey = "cddae1f52f5beef9c20fa6bb6258fcab"; // Khóa API OpenWeatherMap
+// Sử dụng &units=metric để nhận nhiệt độ Celsius
 const apiUrl =
-  "https://api.openweathermap.org/data/2.5/weather?appid=" + apiKey + "&q=";
+  "https://api.openweathermap.org/data/2.5/weather?units=metric&appid=" + apiKey + "&q=";
 
 const searchBox = document.querySelector(".search input");
 const searchBtn = document.querySelector(".search button");
 const weatherIcon = document.querySelector(".weather-icon");
+const cityElement = document.querySelector(".city");
+const tempElement = document.querySelector(".temp");
+const humidityElement = document.querySelector(".humidity");
+const windElement = document.querySelector(".wind");
+const errorDisplay = document.querySelector(".error");
 
-// Gọi API thời tiết từ WeatherAPI.com
+// Hàm để lấy URL icon dựa trên mã icon từ OpenWeatherMap
+function getIconUrl(iconCode) {
+    // OpenWeatherMap cung cấp icon theo mã, ví dụ "01d", "04n"
+    return `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
+}
+
+// Gọi API thời tiết
 async function checkWeather(city) {
+  console.log("Đang tìm kiếm thời tiết cho:", city);
   try {
-    // Không thêm ", Vietnam" mặc định nữa.
-    // API sẽ tự cố gắng tìm kiếm toàn cầu dựa trên tên thành phố.
     const response = await fetch(apiUrl + city);
 
     if (!response.ok) {
-      // Nếu API trả về lỗi (ví dụ: không tìm thấy thành phố)
-      // Kiểm tra mã trạng thái để đưa ra thông báo cụ thể hơn nếu có thể
       const errorData = await response.json();
-      if (errorData && errorData.error && errorData.error.message) {
-        throw new Error(errorData.error.message); // Hiển thị thông báo lỗi từ API
-      } else {
-        throw new Error("Không tìm thấy thành phố. Vui lòng kiểm tra lại tên.");
+      let errorMessage = "Không tìm thấy thành phố. Vui lòng kiểm tra lại tên.";
+      if (errorData && errorData.message) {
+        errorMessage = "Lỗi API: " + errorData.message;
       }
+      errorDisplay.style.display = "block";
+      errorDisplay.querySelector('p').textContent = errorMessage;
+      document.querySelector(".weather").style.display = "none";
+      console.error("Lỗi phản hồi API:", response.status, errorData);
+      return;
     }
 
     const data = await response.json();
-    console.log(data);
-    // Vẫn truyền 'city' (tên người dùng nhập) và dữ liệu API để hiển thị.
-    renderWeather(data);
+    console.log("Dữ liệu API nhận được:", data); // Ghi log toàn bộ dữ liệu
+
+    // Cập nhật thông tin thời tiết trên giao diện
+    cityElement.innerHTML = data.name;
+    tempElement.innerHTML = Math.round(data.main.temp) + "°C";
+    humidityElement.innerHTML = data.main.humidity + "%";
+    windElement.innerHTML = data.wind.speed + " km/h";
+
+    // Cập nhật icon thời tiết
+    if (data.weather && data.weather.length > 0) {
+      const weatherMain = data.weather[0].main;
+      const weatherIconCode = data.weather[0].icon; // Lấy mã icon từ API
+      console.log("Loại thời tiết chính (main):", weatherMain);
+      console.log("Mã icon thời tiết:", weatherIconCode);
+
+      // Sử dụng mã icon trực tiếp từ API để đảm bảo khớp
+      weatherIcon.src = getIconUrl(weatherIconCode);
+    } else {
+      weatherIcon.src = "https://i.postimg.cc/k4G6V2B5/clouds.png"; // Icon mặc định nếu không có dữ liệu weather
+      console.warn("Không có thông tin thời tiết chính trong dữ liệu. Sử dụng icon mặc định.");
+    }
+
+    document.querySelector(".weather").style.display = "block";
+    errorDisplay.style.display = "none";
   } catch (error) {
-    console.log(error.message);
-    showError(error.message);
+    console.error("Lỗi khi tải dữ liệu thời tiết:", error);
+    errorDisplay.style.display = "block";
+    errorDisplay.querySelector('p').textContent = "Không thể kết nối đến máy chủ thời tiết hoặc dữ liệu không hợp lệ.";
+    document.querySelector(".weather").style.display = "none";
   }
 }
 
-// Cập nhật giao diện khi có dữ liệu
-function renderWeather(data) {
-  // Hiển thị tên thành phố mà người dùng đã nhập, và quốc gia mà API đã tìm thấy.
-  // Điều này sẽ giúp phân biệt nếu có nhiều thành phố trùng tên ở các quốc gia khác nhau.
-  document.querySelector(".city").innerHTML =
-    data.name + ", <br/>" + data.weather[0].description;
-  document.querySelector(".temp").innerText =
-    Math.round(data.main.temp) + "°F";
-  document.querySelector(".humidity").innerText = data.main.humidity + "%";
-  document.querySelector(".wind").innerText = data.wind.speed + " km/h";
-
-  weatherIcon.src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
-  weatherIcon.alt = data.name;
-
-  document.querySelector(".weather").style.display = "block";
-  document.querySelector(".error").style.display = "none";
-}
-
-// Hiển thị lỗi
-function showError(message) {
-  document.querySelector(".error").innerText = "⚠️ " + message;
-  document.querySelector(".error").style.display = "block";
-  document.querySelector(".weather").style.display = "none";
-}
-
-// Tìm kiếm khi click hoặc Enter
+// Xử lý sự kiện tìm kiếm thời tiết
 searchBtn.addEventListener("click", () => {
   const city = searchBox.value.trim();
   if (city) checkWeather(city);
@@ -72,7 +83,7 @@ searchBox.addEventListener("keydown", (e) => {
   }
 });
 
-// Xử lý đăng nhập giả lập (localStorage)
+// Logic đăng nhập / trạng thái người dùng (không thay đổi)
 document.addEventListener("DOMContentLoaded", () => {
   document.body.classList.remove("fade-in");
 
@@ -86,27 +97,42 @@ document.addEventListener("DOMContentLoaded", () => {
   function checkLoginStatus() {
     const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
     const savedProfilePicture = localStorage.getItem("profilePicture");
+    const currentUser = localStorage.getItem("currentUser");
 
-    if (isLoggedIn) {
-      authLinks.style.display = "none";
-      accountButtonContainer.style.display = "block";
-      profilePicture.src =
-        savedProfilePicture || "https://i.postimg.cc/pVw7W9Bv/user-icon.png";
-      profilePicture.style.filter = savedProfilePicture
-        ? "none"
-        : "grayscale(100%)";
+    if (isLoggedIn && currentUser) {
+      if (authLinks) authLinks.style.display = "none";
+      if (accountButtonContainer) accountButtonContainer.style.display = "block";
+      if (profilePicture) {
+        profilePicture.src =
+          savedProfilePicture || "https://i.postimg.cc/pVw7W9Bv/user-icon.png";
+        profilePicture.style.filter = savedProfilePicture
+          ? "none"
+          : "grayscale(100%)";
+      }
     } else {
-      authLinks.style.display = "block";
-      accountButtonContainer.style.display = "none";
+      if (authLinks) authLinks.style.display = "block";
+      if (accountButtonContainer) accountButtonContainer.style.display = "none";
     }
   }
 
-  accountButton.addEventListener("click", () => {
-    document.body.classList.add("fade-out");
-    setTimeout(() => {
-      window.location.href = "Account.html";
-    }, 500);
+  checkLoginStatus();
+
+  window.addEventListener("storage", (event) => {
+    if (
+      event.key === "isLoggedIn" ||
+      event.key === "profilePicture" ||
+      event.key === "currentUser"
+    ) {
+      checkLoginStatus();
+    }
   });
 
-  checkLoginStatus();
+  if (accountButton) {
+    accountButton.addEventListener("click", () => {
+      document.body.classList.add("fade-out");
+      setTimeout(() => {
+        window.location.href = "./pages/Account.html";
+      }, 500);
+    });
+  }
 });

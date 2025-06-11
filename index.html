@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Seori - Let the Sky Speak</title>
   <link rel="stylesheet" href="./css/Seori.css" />
 </head>
-
 <body>
   <div id="auth-links" style="position: absolute; top: 20px; right: 20px; z-index: 100">
     <a href="./pages/login.html" style="color: white; text-decoration: none; font-weight: bold">Login</a>
@@ -31,10 +29,7 @@
   </div>
 
   <div class="card">
-    <div class="logo">
-      <h1 class="logo-text">Seori</h1>
-    </div>
-
+    <div class="logo-text">Seori</div>
     <div class="search">
       <input type="text" placeholder="Enter city name" spellcheck="false" />
       <button>
@@ -42,12 +37,12 @@
       </button>
     </div>
 
-    <div class="error">
-      <p>Invalid city name</p>
+    <div class="error" style="display: none;">
+      <p></p>
     </div>
 
-    <div class="weather">
-      <img src="https://i.postimg.cc/ZnFndXXc/rain.png" class="weather-icon" alt="Weather icon" />
+    <div class="weather" style="display: none;">
+      <img src="" class="weather-icon" alt="Weather icon" />
       <h1 class="temp">--°C</h1>
       <h2 class="city">City</h2>
       <div class="details">
@@ -75,19 +70,13 @@
       <div id="chat-header">Seori Chat</div>
       <div id="chat-messages"></div>
       <form id="chat-form">
-        <input type="text" id="user-input" placeholder="Ask me anything..." autocomplete="off" />
-        <button type="submit">➤</button>
+        <input type="text" id="user-input" placeholder="Type your message..." />
+        <button type="submit">Send</button>
       </form>
     </div>
   </div>
 
-
-  <body class="fade-in">
-
-    <script src="./js/Seori.js"></script>
-    
-    <script src="./js/Chatbot.js"></script>
-
-  </body>
-
+  <script src="./js/Seori.js"></script>
+  <script src="./js/Chatbot.js"></script>
+</body>
 </html>

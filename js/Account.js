@@ -36,28 +36,41 @@ document.addEventListener("DOMContentLoaded", () => {
       savedProfilePicture = unsavedImage;
       unsavedImage = null;
       unsavedWarning.classList.add("hidden");
+      saveButton.classList.remove("hidden");
       alert("Đã lưu ảnh!");
     }
   });
 
+  // Xử lý nút đăng xuất
   logoutButton.addEventListener("click", () => {
     localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("currentUser"); // Xóa thông tin người dùng hiện tại
     localStorage.removeItem("profilePicture");
-    window.location.href = "index.html";
+    document.body.classList.add("fade-out");
+    setTimeout(() => {
+        // Từ pages/Account.html trở về index.html (thư mục gốc)
+        window.location.href = "../index.html"; // ĐÃ SỬA ĐỔI
+    }, 500);
   });
 
+  // Xử lý nút quay lại
   backButton.addEventListener("click", () => {
     if (unsavedImage) {
-      currentProfilePicture.src =
-        savedProfilePicture || "https://i.postimg.cc/pVw7W9Bv/user-icon.png";
-      unsavedImage = null;
+      const confirmDiscard = confirm("Bạn có thay đổi ảnh đại diện chưa lưu. Bạn có muốn bỏ qua các thay đổi này không?");
+      if (confirmDiscard) {
+        currentProfilePicture.src = savedProfilePicture || "https://i.postimg.cc/pVw7W9Bv/user-icon.png";
+        unsavedImage = null;
+        unsavedWarning.classList.add("hidden"); // Ẩn cảnh báo sau khi bỏ qua
+        saveButton.classList.remove("hidden"); // Hiển thị lại nút save
+      } else {
+          return; // Không quay lại nếu người dùng không muốn bỏ qua
+      }
     }
-
-    document.body.classList.add("fade-out"); // thêm hiệu ứng
-
+    document.body.classList.add("fade-out");
     setTimeout(() => {
-      window.location.href = "index.html";
-    }, 500); // đợi hiệu ứng xong mới chuyển
+      // Từ pages/Account.html trở về index.html (thư mục gốc)
+      window.location.href = "../index.html"; // ĐÃ SỬA ĐỔI
+    }, 500);
   });
 
   discardButton.addEventListener("click", () => {
@@ -65,6 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
       savedProfilePicture || "https://i.postimg.cc/pVw7W9Bv/user-icon.png";
     unsavedImage = null;
     unsavedWarning.classList.add("hidden");
+    saveButton.classList.remove("hidden"); // Đảm bảo nút save hiển thị lại
   });
 
   confirmSaveButton.addEventListener("click", () => {
@@ -73,11 +87,21 @@ document.addEventListener("DOMContentLoaded", () => {
       savedProfilePicture = unsavedImage;
       unsavedImage = null;
       unsavedWarning.classList.add("hidden");
-
-      confirmSaveButton.classList.add("shake");
-      setTimeout(() => {
-        confirmSaveButton.classList.remove("shake");
-      }, 500);
+      saveButton.classList.remove("hidden");
+      alert("Đã lưu ảnh!");
     }
   });
+
+    // Thêm logic để hiển thị nút "Save" ban đầu khi không có thay đổi
+    // và ẩn nó khi có thay đổi chưa lưu.
+    function updateSaveButtonVisibility() {
+        if (unsavedImage) {
+            saveButton.classList.add("hidden");
+        } else {
+            saveButton.classList.remove("hidden");
+        }
+    }
+
+    // Gọi lần đầu khi tải trang
+    updateSaveButtonVisibility();
 });

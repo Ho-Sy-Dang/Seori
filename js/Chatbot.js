@@ -37,14 +37,16 @@ document.addEventListener("DOMContentLoaded", () => {
     isWaiting = false;
   });
 
+  // Hàm thêm tin nhắn vào khung chat
   function appendMessage(sender, text) {
     const msg = document.createElement("div");
     msg.className = "chat-message";
     msg.innerHTML = `<strong>${sender}:</strong> <span class="msg-text">${text}</span>`;
     chatMessages.appendChild(msg);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
+    chatMessages.scrollTop = chatMessages.scrollHeight; // Tự động cuộn xuống cuối
   }
 
+  // Hàm cập nhật tin nhắn bot cuối cùng (ví dụ: thay thế "Đang suy nghĩ..." bằng câu trả lời)
   function updateLastBotMessage(text) {
     const lastMsg = chatMessages.querySelector(
       ".chat-message:last-child .msg-text"
@@ -52,6 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (lastMsg) lastMsg.textContent = text;
   }
 
+  // Hàm gọi API Gemini
   async function getGeminiReply(message) {
     const response = await fetch(geminiURL + geminiApiKey, {
       method: "POST",
@@ -67,15 +70,16 @@ document.addEventListener("DOMContentLoaded", () => {
       }),
     });
 
-    const data = await response.json();
-
-    if (data.candidates && data.candidates.length > 0) {
-      const content = data.candidates[0].content;
-      if (content && content.parts && content.parts[0].text) {
-        return content.parts[0].text.trim();
-      }
+    if (!response.ok) {
+        throw response; // Ném toàn bộ response để có thể đọc errorData ở catch
     }
 
-    throw new Error("No valid response from Gemini");
+    const data = await response.json();
+
+    if (data && data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0]) {
+      return data.candidates[0].content.parts[0].text;
+    } else {
+      throw new Error("Không nhận được phản hồi hợp lệ từ Gemini API.");
+    }
   }
 });
