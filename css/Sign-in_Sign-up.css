@@ -93,29 +93,29 @@ button:hover {
 }
 
 /* Responsive adjustments */
- @media (max-width: 480px) {
+@media (max-width: 480px) {
   .main {
     width: 90%;
-    max-width: 320px; 
-    height: 450px; 
+    max-width: 320px;
+    height: 450px;
   }
 
   label {
-    font-size: 2em; 
-    margin: 30px; 
+    font-size: 2em;
+    margin: 30px;
   }
 
   input {
-    width: 70%; 
-    padding: 10px; 
-    margin: 15px auto; 
+    width: 70%;
+    padding: 10px;
+    margin: 15px auto;
   }
 
   button {
-    width: 70%; 
-    height: 35px; 
-    margin-top: 25px; 
-    font-size: 0.9em; 
+    width: 70%;
+    height: 35px;
+    margin-top: 25px;
+    font-size: 0.9em;
   }
 
   .login {

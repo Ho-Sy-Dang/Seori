@@ -1,57 +1,108 @@
-// Function to show error messages (Giữ lại hàm nhưng sẽ không gọi đến nó trong logic đăng nhập/đăng ký)
-function showErrorMessage(elementId, message) {
-    const errorElement = document.getElementById(elementId);
-    if (errorElement) {
-        errorElement.textContent = message;
-        errorElement.classList.remove('hidden');
-        errorElement.classList.add('shake');
-        setTimeout(() => errorElement.classList.remove('shake'), 500); // Remove shake after animation
-    }
+const loginForm = document.getElementById("login-form");
+const signupForm = document.getElementById("signup-form");
+
+// -----------------------------------------------------
+// kiem tra form dang ki
+function validateSignupForm(email, username, password, phoneNum) {
+  // kiem tra username (>= 6 ky tu)
+  if (username.length < 6) {
+    alert("Username must be at least 6 characters long.");
+    return false;
+  }
+  // password (>= 6 ky tu)
+  if (password.length < 6) {
+    alert("Password must be at least 6 characters long.");
+    return false;
+  }
+  if (phoneNum.length < 10) {
+    alert("Phone number must be at least 10 digits long.");
+    return false;
+  }
+  return true;
 }
 
-// Function to hide error messages (Giữ lại hàm nhưng sẽ không gọi đến nó trong logic đăng nhập/đăng ký)
-function hideErrorMessage(elementId) {
-    const errorElement = document.getElementById(elementId);
-    if (errorElement) {
-        errorElement.classList.add('hidden');
-        errorElement.textContent = '';
-    }
+// -----------------------------------------------------
+// kiem tra trung lap
+function isEmailRegistered(email) {
+  // kiem tra xem email da ton tai trong local storage chua
+  if (localStorage.getItem(email) !== null) {
+    return true;
+  }
+  return false;
 }
 
-// Bắt sự kiện click vào nút đăng ký ------------------------------
-document.getElementById("signup-form").addEventListener("submit", (event) => {
-    event.preventDefault();
+// -----------------------------------------------------
+// dang ki -> luu local storage
+function signupToLocalStorage() {
+  // lay du lieu tu form
+  const email = document.getElementById("signup_email").value;
+  const username = document.getElementById("signup_username").value;
+  const password = document.getElementById("signup_password").value;
+  const phoneNum = document.getElementById("signup_phoneNum").value;
 
-    // Loại bỏ hoàn toàn các kiểm tra và lưu trữ người dùng
-    // Nó sẽ luôn được coi là đăng ký thành công và chuyển hướng
-
-    localStorage.setItem("isLoggedIn", "true");
-    // Lưu một thông tin người dùng giả định hoặc lấy từ input (nếu muốn)
-    const username = document.querySelector("#signup-form input[name='txt']").value.trim() || "GuestUser";
-    const email = document.querySelector("#signup-form input[name='email']").value.trim() || "guest@example.com";
-    localStorage.setItem("currentUser", JSON.stringify({ username: username, email: email }));
-
-    alert("Đăng ký thành công (chế độ tự động đăng nhập)!");
-    // Từ pages/login.html trở về index.html (thư mục gốc)
+  // kiem tra form
+  if (isEmailRegistered(email)) {
+    alert("Email is already registered. Please use a different email.");
+    return;
+  }
+  const checked = validateSignupForm(email, username, password, phoneNum);
+  if (checked == true) {
+    // luu vao local storage
+    const newUser = {
+      username: username,
+      password: password,
+      phoneNum: phoneNum,
+    };
+    localStorage.setItem(email, JSON.stringify(newUser));
+    // luu current user
+    localStorage.setItem("currentUser", email);
+    // thong bao
+    alert("Registration successful!");
+    // chuyen trang home
     window.location.href = "../index.html";
+  }
+}
+
+// -----------------------------------------------------
+// dang nhap -> chuyen home
+function loginToHome() {
+  // lay du lieu tu form
+  const email = document.getElementById("login_email").value;
+  const password = document.getElementById("login_password").value;
+  // kiem tra email da dang ki chua
+  if (isEmailRegistered(email)) {
+    // kiem tra password
+    const userInfo = JSON.parse(localStorage.getItem(email));
+    // so sanh password
+    if (userInfo.password === password) {
+      // dang nhap thanh cong
+      // luu current user vao local storage
+      localStorage.setItem("currentUser", email);
+      alert("Login successful! Redirecting to home page...");
+      // chuyen trang
+      window.location.href = "../index.html"; // chuyen den trang home
+    } else {
+      // mat khau khong dung
+      alert("Incorrect password. Please try again.");
+      return;
+    }
+  } else {
+    // email chua dang ki
+    alert("Email not registered. Please sign up first.");
+    return;
+  }
+}
+
+// -----------------------------------------------------
+// bat su kien cho nut dang ki
+signupForm.addEventListener("submit", function (event) {
+  event.preventDefault(); // ngan chan submit mac dinh (chuyen trang theo action/ sua url)
+  signupToLocalStorage(); // goi ham dang ki
 });
 
-// Bắt sự kiện click vào nút đăng nhập ------------------------------
-document.getElementById("login-form").addEventListener("submit", (event) => {
-    event.preventDefault();
-
-    // Loại bỏ hoàn toàn các kiểm tra email/mật khẩu
-    // Nó sẽ luôn được coi là đăng nhập thành công và chuyển hướng
-
-    localStorage.setItem("isLoggedIn", "true");
-    // Lưu một thông tin người dùng giả định hoặc lấy từ input (nếu muốn)
-    const email = document.querySelector("#login-form input[name='email']").value.trim() || "guest@example.com";
-    // Trong trường hợp này, bạn có thể cần một username giả định nếu currentUser yêu cầu nó
-    const username = "Logged In User"; // Một tên mặc định
-
-    localStorage.setItem("currentUser", JSON.stringify({ username: username, email: email }));
-
-    alert("Đăng nhập thành công (chế độ tự động đăng nhập)!");
-    // Từ pages/login.html trở về index.html (thư mục gốc)
-    window.location.href = "../index.html";
+// -----------------------------------------------------
+// bat su kien cho nut dang nhap
+loginForm.addEventListener("submit", function (event) {
+  event.preventDefault(); // ngan chan submit mac dinh (chuyen trang theo action/ sua url)
+  loginToHome(); // goi ham dang nhap
 });
